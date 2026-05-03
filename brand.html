@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>financial&nbsp;models — Brand Style Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ─────────────────────────────────────────────── */
+:root {
+  --font:      "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "Segoe UI Mono", "Cascadia Mono", ui-monospace, monospace;
+
+  --teal-900: #005A5A;
+  --teal-700: #008282;
+  --teal-400: #50C1C1;
+  --teal-100: #95DFDB;
+  --amber:    #E1A01E;
+  --red:      #C41E3A;
+  --ink:      #012D2C;
+
+  --text:         #005A5A;
+  --text-muted:   #008282;
+  --surface-page: #F0FAFA;
+  --surface-card: #FFFFFF;
+  --surface-in:   #F0FAFA;
+  --border:       #D0ECEB;
+  --shadow:       0 1px 4px rgba(1,45,44,.10);
+  --shadow-md:    0 4px 14px rgba(1,45,44,.12);
+  --r:            10px;
+  --nav-h:        52px;
+}
+
+[data-theme="dark"] {
+  --text:         #95DFDB;
+  --text-muted:   #50C1C1;
+  --surface-page: #012D2C;
+  --surface-card: #032F2E;
+  --surface-in:   #021E1E;
+  --border:       #0A5050;
+  --shadow:       0 1px 4px rgba(0,0,0,.40);
+  --shadow-md:    0 4px 14px rgba(0,0,0,.50);
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+/* 5: scroll-padding-top offsets jump targets by the navbar height */
+html {
+  font-size:          16px;
+  scroll-behavior:    smooth;
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  font-family: var(--font);
+  font-size:   0.9375rem;
+  color:       var(--text);
+  background:  var(--surface-page);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 200ms, color 200ms;
+}
+
+/* ── Navbar ─────────────────────────────────────────────── */
+.navbar {
+  display:       flex;
+  align-items:   center;
+  height:        var(--nav-h);
+  padding:       0 32px;
+  background:    var(--teal-900);
+  border-bottom: 1px solid rgba(149,223,219,.15);
+  position:      sticky;
+  top:           0;
+  z-index:       100;
+  gap:           16px;
+}
+
+.brand {
+  font-size:       1rem;
+  font-weight:     600;
+  color:           var(--teal-100);
+  text-decoration: none;
+  white-space:     nowrap;
+}
+
+.nav-links { display: flex; list-style: none; gap: 2px; }
+.nav-links a {
+  font-size:       0.8125rem;
+  font-weight:     500;
+  color:           rgba(149,223,219,.75);
+  padding:         5px 10px;
+  border-radius:   5px;
+  text-decoration: none;
+  transition:      background 130ms, color 130ms;
+}
+.nav-links a:hover { color: var(--teal-100); background: rgba(149,223,219,.10); }
+
+/* 3: plain text button, no dot */
+.theme-btn {
+  margin-left:   auto;
+  font-family:   var(--font);
+  font-size:     0.8125rem;
+  font-weight:   500;
+  color:         rgba(149,223,219,.75);
+  background:    rgba(149,223,219,.12);
+  border:        1px solid rgba(149,223,219,.20);
+  border-radius: 5px;
+  padding:       5px 12px;
+  cursor:        pointer;
+  transition:    background 130ms;
+  white-space:   nowrap;
+}
+.theme-btn:hover { background: rgba(149,223,219,.20); }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.wrap {
+  max-width:     960px;
+  margin-inline: auto;
+  padding:       48px 32px 80px;
+}
+@media (max-width: 640px) { .wrap { padding: 32px 16px 64px; } }
+
+/* ── Section ────────────────────────────────────────────── */
+.section { margin-bottom: 64px; }
+
+.section-head {
+  display:        flex;
+  align-items:    baseline;
+  gap:            12px;
+  padding-bottom: 16px;
+  border-bottom:  1px solid var(--border);
+  margin-bottom:  28px;
+}
+
+.phase-tag {
+  font-size:      0.6875rem;
+  font-weight:    600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  background:     var(--surface-in);
+  border:         1px solid var(--border);
+  padding:        3px 8px;
+  border-radius:  4px;
+  white-space:    nowrap;
+}
+
+.section-title { font-size: 1.375rem; font-weight: 600; color: var(--text); }
+.section-desc  { font-size: 0.875rem; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
+
+.sub-label {
+  font-size:      0.6875rem;
+  font-weight:    600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  margin-bottom:  12px;
+  margin-top:     28px;
+}
+
+/* ── Divider ────────────────────────────────────────────── */
+.rule { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* ── Grid helpers ───────────────────────────────────────── */
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+@media (max-width: 640px) {
+  .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr 1fr; }
+}
+
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* ============================================================
+   PHASE 1 — LOGO
+   4: show only the logo matching the active theme
+   ============================================================ */
+[data-theme="light"] .logo-variant-dark  { display: none; }
+[data-theme="dark"]  .logo-variant-light { display: none; }
+
+.logo-card {
+  border:        1px solid var(--border);
+  border-radius: var(--r);
+  overflow:      hidden;
+  box-shadow:    var(--shadow);
+}
+.logo-stage {
+  padding:         32px 28px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  min-height:      100px;
+}
+.logo-tag {
+  padding:    8px 14px;
+  font-size:  0.75rem;
+  color:      var(--text-muted);
+  background: var(--surface-in);
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   PHASE 2 — COLOURS
+   ============================================================ */
+.swatch {
+  border:        1px solid var(--border);
+  border-radius: var(--r);
+  overflow:      hidden;
+  box-shadow:    var(--shadow);
+}
+.swatch-color { height: 64px; display: flex; align-items: flex-end; padding: 6px 8px; }
+.swatch-hex {
+  font-family:   var(--font-mono);
+  font-size:     0.6875rem;
+  font-weight:   500;
+  padding:       2px 6px;
+  border-radius: 3px;
+  background:    rgba(0,0,0,.20);
+  color:         #fff;
+}
+.swatch-info { padding: 10px 12px; background: var(--surface-card); }
+.swatch-name { font-size: 0.8125rem; font-weight: 600; color: var(--text); }
+.swatch-role { font-size: 0.6875rem; color: var(--text-muted); margin-top: 1px; }
+
+.contrast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+.cpair        { padding: 12px 14px; border-radius: 7px; border: 1px solid transparent; }
+.cpair-sample { font-size: 0.9375rem; font-weight: 600; margin-bottom: 3px; }
+.cpair-meta   { font-size: 0.6875rem; opacity: .7; }
+
+/* ============================================================
+   PHASE 3 — TYPOGRAPHY
+   ============================================================ */
+.type-row { display: flex; align-items: baseline; gap: 24px; padding: 10px 12px; border-radius: 6px; }
+.type-row:hover { background: var(--surface-in); }
+.type-meta  { width: 140px; flex-shrink: 0; }
+.type-token { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-muted); }
+.type-spec  { font-size: 0.6875rem; color: var(--text-muted); opacity: .65; margin-top: 1px; }
+
+/* ============================================================
+   PHASE 4 — SPACING
+   ============================================================ */
+.sp-row { display: flex; align-items: center; gap: 16px; padding: 6px 8px; border-radius: 5px; }
+.sp-row:hover { background: var(--surface-in); }
+.sp-bar   { background: var(--teal-100); border-radius: 2px; height: 16px; flex-shrink: 0; min-width: 4px; }
+[data-theme="dark"] .sp-bar { background: var(--teal-700); }
+.sp-token { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-muted); width: 100px; flex-shrink: 0; }
+.sp-val   { font-size: 0.8125rem; font-weight: 600; color: var(--text); width: 44px; }
+.sp-use   { font-size: 0.8125rem; color: var(--text-muted); }
+
+/* ============================================================
+   PHASE 5 — COMPONENTS
+   ============================================================ */
+
+/* Buttons */
+.btn {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             6px;
+  font-family:     var(--font);
+  font-size:       0.875rem;
+  font-weight:     600;
+  padding:         9px 20px;
+  border-radius:   6px;
+  border:          1px solid transparent;
+  cursor:          pointer;
+  text-decoration: none;
+  transition:      background 130ms, color 130ms, border-color 130ms;
+  user-select:     none;
+  line-height:     1;
+}
+.btn:active   { opacity: .85; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+.btn-primary       { background: var(--teal-900); color: #fff; border-color: var(--teal-900); }
+.btn-primary:hover { background: var(--teal-700); border-color: var(--teal-700); }
+[data-theme="dark"] .btn-primary       { background: var(--teal-400); color: var(--ink); border-color: var(--teal-400); }
+[data-theme="dark"] .btn-primary:hover { background: var(--teal-100); border-color: var(--teal-100); }
+
+.btn-outline       { background: transparent; color: var(--text); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--teal-700); color: var(--teal-700); }
+[data-theme="dark"] .btn-outline:hover { border-color: var(--teal-400); color: var(--teal-400); }
+
+.btn-danger       { background: var(--red); color: #fff; border-color: var(--red); }
+.btn-danger:hover { background: #A01830; }
+
+.btn-sm { font-size: 0.75rem; padding: 6px 14px; }
+.btn-lg { font-size: 1rem;    padding: 12px 28px; }
+
+/* Badges */
+.badge {
+  display:       inline-flex;
+  align-items:   center;
+  font-family:   var(--font);
+  font-size:     0.6875rem;
+  font-weight:   600;
+  padding:       3px 9px;
+  border-radius: 999px;
+  white-space:   nowrap;
+  line-height:   1.4;
+}
+.badge-teal    { background: #95DFDB; color: #005A5A; }
+.badge-amber   { background: #E1A01E; color: #012D2C; }
+.badge-red     { background: #FDEAED; color: #C41E3A; }
+.badge-green   { background: #E8F5EE; color: #1A7A4A; }
+.badge-neutral { background: var(--surface-in); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* Inputs */
+.field       { display: flex; flex-direction: column; gap: 5px; }
+.field-label { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.field-hint  { font-size: 0.75rem; color: var(--text-muted); }
+.field-error { font-size: 0.75rem; color: var(--red); }
+
+.input {
+  font-family:   var(--font);
+  font-size:     0.875rem;
+  color:         var(--text);
+  background:    var(--surface-card);
+  border:        1px solid var(--border);
+  border-radius: 6px;
+  padding:       9px 12px;
+  outline:       none;
+  transition:    border-color 130ms, box-shadow 130ms;
+  width:         100%;
+}
+.input::placeholder { color: #7A9E9E; }
+.input:hover        { border-color: var(--teal-700); }
+.input:focus        { border-color: var(--teal-700); box-shadow: 0 0 0 3px rgba(0,130,130,.15); }
+.input.is-error     { border-color: var(--red); }
+.input-mono         { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+[data-theme="dark"] .input       { background: var(--surface-in); }
+[data-theme="dark"] .input:focus { border-color: var(--teal-400); box-shadow: 0 0 0 3px rgba(80,193,193,.20); }
+
+/* Cards */
+.card {
+  background:    var(--surface-card);
+  border:        1px solid var(--border);
+  border-radius: var(--r);
+  padding:       20px;
+  box-shadow:    var(--shadow);
+}
+.card-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.card-body  { font-size: 0.875rem; color: var(--text-muted); line-height: 1.55; }
+.card-foot  { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+/* Content card output variant: amber left border, warm bg on light only */
+.card.output-card { border-left: 3px solid var(--amber); }
+[data-theme="light"] .card.output-card { background: #FFFCF2; }
+
+/* Metric cards */
+.card-metric {
+  background:    var(--surface-card);
+  border:        1px solid var(--border);
+  border-left:   3px solid var(--teal-700);
+  border-radius: var(--r);
+  padding:       20px;
+  box-shadow:    var(--shadow);
+}
+/* Output metric: amber accent on light, teal accent on dark */
+.card-metric.output                  { border-left-color: var(--amber); }
+[data-theme="light"] .card-metric.output { background: #FFFCF2; }
+[data-theme="dark"]  .card-metric.output { border-left-color: var(--teal-400); }
+
+.m-label {
+  font-size:      0.6875rem;
+  font-weight:    600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  margin-bottom:  6px;
+}
+.m-value {
+  font-family:          var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size:            1.75rem;
+  font-weight:          600;
+  color:                var(--text);
+  line-height:          1.1;
+  margin-bottom:        4px;
+}
+.m-delta { font-size: 0.875rem; font-weight: 600; }
+
+/* Up/down: accessible on both themes */
+.up   { color: #0F6B3A; }
+.down { color: #B01831; }
+[data-theme="dark"] .up   { color: #3DD68C; }
+[data-theme="dark"] .down { color: #F87171; }
+
+/* Status banners: muted palette in dark mode */
+.status {
+  display:       flex;
+  gap:           10px;
+  padding:       12px 16px;
+  border-radius: 7px;
+  font-size:     0.875rem;
+  line-height:   1.5;
+}
+.status-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+[data-theme="light"] .status.ok   { background: #E8F5EE; color: #1A7A4A; }
+[data-theme="light"] .status.warn { background: #FDF3D7; color: #7A5000; }
+[data-theme="light"] .status.err  { background: #FDEAED; color: #C41E3A; }
+[data-theme="light"] .status.info { background: var(--surface-in); color: var(--text); border: 1px solid var(--border); }
+
+[data-theme="dark"] .status.ok   { background: #0B2E1B; color: #5EC98A; border: 1px solid #1A4A2E; }
+[data-theme="dark"] .status.warn { background: #231800; color: #C89A40; border: 1px solid #3D2D00; }
+[data-theme="dark"] .status.err  { background: #2E0A10; color: #E06070; border: 1px solid #4A1520; }
+[data-theme="dark"] .status.info { background: var(--surface-in); color: var(--text); border: 1px solid var(--border); }
+
+/* Table */
+.table-wrap {
+  width:         100%;
+  overflow-x:    auto;
+  border:        1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow:    var(--shadow);
+}
+.table { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: var(--surface-card); }
+.table thead th {
+  font-size:      0.6875rem;
+  font-weight:    600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  background:     var(--surface-in);
+  padding:        10px 16px;
+  text-align:     left;
+  border-bottom:  2px solid var(--border);
+  white-space:    nowrap;
+}
+.table thead th.r            { text-align: right; }
+.table tbody td              { padding: 10px 16px; color: var(--text); border-bottom: 1px solid var(--border); }
+.table tbody tr:last-child td { border-bottom: none; }
+.table tbody tr:hover td     { background: var(--surface-in); }
+.table td.r {
+  text-align:           right;
+  font-family:          var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+/* Output column: amber on light, deep teal on dark */
+.table td.out {
+  text-align:           right;
+  font-family:          var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight:          600;
+}
+[data-theme="light"] .table td.out { background: #FDF3D7; color: #012D2C; }
+[data-theme="dark"]  .table td.out { background: #0A3D3D; color: var(--teal-100); }
+
+/* ============================================================
+   PHASE 6 — VOICE
+   ============================================================ */
+.pillar {
+  padding:       20px;
+  background:    var(--surface-card);
+  border:        1px solid var(--border);
+  border-left:   3px solid;
+  border-radius: var(--r);
+  box-shadow:    var(--shadow);
+}
+.pillar-title { font-size: 0.9375rem; font-weight: 600; margin-bottom: 7px; }
+.pillar-body  { font-size: 0.875rem; color: var(--text-muted); line-height: 1.55; }
+
+/* Do/Don't: muted in dark mode */
+.do-row, .dont-row {
+  display:       flex;
+  gap:           10px;
+  padding:       9px 14px;
+  border-radius: 6px;
+  font-size:     0.875rem;
+}
+[data-theme="light"] .do-row   { background: #E8F5EE; color: #1A7A4A; }
+[data-theme="light"] .dont-row { background: #FDEAED; color: #C41E3A; }
+[data-theme="dark"]  .do-row   { background: #0B2E1B; color: #5EC98A; border: 1px solid #1A4A2E; }
+[data-theme="dark"]  .dont-row { background: #2E0A10; color: #E06070; border: 1px solid #4A1520; }
+.do-row strong, .dont-row strong { flex-shrink: 0; font-weight: 700; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  background:      var(--teal-900);
+  border-radius:   var(--r);
+  padding:         40px;
+  margin-bottom:   56px;
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             32px;
+  overflow:        hidden;
+  position:        relative;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, rgba(149,223,219,.03) 0, rgba(149,223,219,.03) 1px,
+    transparent 1px, transparent 20px
+  );
+}
+.hero-eyebrow {
+  font-size:      0.6875rem;
+  font-weight:    600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color:          var(--teal-400);
+  margin-bottom:  8px;
+}
+.hero-title { font-size: 2rem; font-weight: 700; color: var(--teal-100); line-height: 1.1; margin-bottom: 8px; }
+.hero-sub   { font-size: 0.9375rem; color: rgba(149,223,219,.70); max-width: 380px; line-height: 1.6; }
+
+@media (max-width: 640px) {
+  .hero { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  max-width:       960px;
+  margin-inline:   auto;
+  border-top:      1px solid var(--border);
+  padding:         32px 32px;
+  display:         flex;
+  align-items:     flex-start;
+  justify-content: space-between;
+  gap:             24px;
+  flex-wrap:       wrap;
+}
+.footer-left { display: flex; flex-direction: column; gap: 3px; }
+.footer-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.footer-meta { font-size: 0.75rem; color: var(--text-muted); }
+.footer-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.footer-tag {
+  font-size:      0.6875rem;
+  font-weight:    600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  background:     var(--surface-in);
+  border:         1px solid var(--border);
+  padding:        3px 8px;
+  border-radius:  4px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <!-- Mark: SVG hardcoded to dark-bg palette — never affected by theme toggle -->
+  <svg width="31" height="22" viewBox="0 0 31 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0">
+    <rect x="0"  y="0"  width="9" height="6" rx="1.5" fill="#95DFDB"/>
+    <rect x="11" y="0"  width="9" height="6" rx="1.5" fill="#50C1C1"/>
+    <rect x="22" y="0"  width="9" height="6" rx="1.5" fill="#008282"/>
+    <rect x="0"  y="8"  width="9" height="6" rx="1.5" fill="#95DFDB"/>
+    <rect x="11" y="8"  width="9" height="6" rx="1.5" fill="#50C1C1"/>
+    <rect x="22" y="8"  width="9" height="6" rx="1.5" fill="#008282"/>
+    <rect x="0"  y="16" width="9" height="6" rx="1.5" fill="#95DFDB"/>
+    <rect x="11" y="16" width="9" height="6" rx="1.5" fill="#50C1C1"/>
+    <rect x="22" y="16" width="9" height="6" rx="1.5" fill="#E1A01E"/>
+  </svg>
+  <!-- 1: non-breaking space -->
+  <a class="brand" href="#">financial&nbsp;models</a>
+  <ul class="nav-links">
+    <li><a href="#logo">Logo</a></li>
+    <li><a href="#colours">Colours</a></li>
+    <li><a href="#type">Type</a></li>
+    <li><a href="#spacing">Spacing</a></li>
+    <li><a href="#components">Components</a></li>
+    <li><a href="#voice">Voice</a></li>
+  </ul>
+  <!-- 3: plain text only, no dot -->
+  <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">Light</button>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div style="position:relative">
+      <div class="hero-eyebrow">Brand Style Guide</div>
+      <div class="hero-title">financial&nbsp;models</div>
+      <div class="hero-sub">Clean component library</div>
+    </div>
+    <svg width="74" height="52" viewBox="0 0 74 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;position:relative" aria-hidden="true">
+      <rect x="0"  y="0"  width="22" height="14" rx="3" fill="#95DFDB"/>
+      <rect x="26" y="0"  width="22" height="14" rx="3" fill="#50C1C1"/>
+      <rect x="52" y="0"  width="22" height="14" rx="3" fill="#008282"/>
+      <rect x="0"  y="19" width="22" height="14" rx="3" fill="#95DFDB"/>
+      <rect x="26" y="19" width="22" height="14" rx="3" fill="#50C1C1"/>
+      <rect x="52" y="19" width="22" height="14" rx="3" fill="#008282"/>
+      <rect x="0"  y="38" width="22" height="14" rx="3" fill="#95DFDB"/>
+      <rect x="26" y="38" width="22" height="14" rx="3" fill="#50C1C1"/>
+      <rect x="52" y="38" width="22" height="14" rx="3" fill="#E1A01E"/>
+    </svg>
+  </div>
+
+  <!-- ── LOGO ────────────────────────────────────────────── -->
+  <section class="section" id="logo">
+    <div class="section-head">
+      <span class="phase-tag">Phase 01</span>
+      <div>
+        <div class="section-title">Logo</div>
+        <div class="section-desc">Scalable logo and icon variations. Maintain a minimum clear space on all sides equal to the height of the capital letters.</div>
+      </div>
+    </div>
+
+    <div class="cols-2">
+      <!-- Horizontal Logo — Light Background -->
+      <div class="logo-card logo-variant-light">
+        <div class="logo-stage" style="background:#F0FAFA">
+          <svg width="240" height="40" viewBox="0 0 240 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grid Mark -->
+            <rect x="0"  y="6"  width="11" height="8" rx="1.5" fill="#95DFDB"/>
+            <rect x="15" y="6"  width="11" height="8" rx="1.5" fill="#008282"/>
+            <rect x="29" y="6"  width="11" height="8" rx="1.5" fill="#005A5A"/>
+            <rect x="0"  y="16" width="11" height="8" rx="1.5" fill="#95DFDB"/>
+            <rect x="15" y="16" width="11" height="8" rx="1.5" fill="#008282"/>
+            <rect x="29" y="16" width="11" height="8" rx="1.5" fill="#005A5A"/>
+            <rect x="0"  y="26" width="11" height="8" rx="1.5" fill="#95DFDB"/>
+            <rect x="15" y="26" width="11" height="8" rx="1.5" fill="#008282"/>
+            <rect x="29" y="26" width="11" height="8" rx="1.5" fill="#E1A01E"/>
+            <!-- Divider -->
+            <rect x="54" y="0" width="1" height="40" fill="#95DFDB" fill-opacity="0.6"/>
+            <!-- Wordmark -->
+            <text x="68" y="28" fill="#005A5A" style="font-family:'Segoe UI',sans-serif;font-size:22px;font-weight:500;letter-spacing:-0.005em">financial models</text>
+          </svg>
+        </div>
+        <div class="logo-tag">Horizontal — light background</div>
+      </div>
+
+      <!-- Horizontal Logo — Dark Background -->
+      <div class="logo-card logo-variant-dark">
+        <div class="logo-stage" style="background:#012D2C">
+          <svg width="240" height="40" viewBox="0 0 240 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grid Mark -->
+            <rect x="0"  y="6"  width="11" height="8" rx="1.5" fill="#95DFDB"/>
+            <rect x="15" y="6"  width="11" height="8" rx="1.5" fill="#50C1C1"/>
+            <rect x="29" y="6"  width="11" height="8" rx="1.5" fill="#008282"/>
+            <rect x="0"  y="16" width="11" height="8" rx="1.5" fill="#95DFDB"/>
+            <rect x="15" y="16" width="11" height="8" rx="1.5" fill="#50C1C1"/>
+            <rect x="29" y="16" width="11" height="8" rx="1.5" fill="#008282"/>
+            <rect x="0"  y="26" width="11" height="8" rx="1.5" fill="#95DFDB"/>
+            <rect x="15" y="26" width="11" height="8" rx="1.5" fill="#50C1C1"/>
+            <rect x="29" y="26" width="11" height="8" rx="1.5" fill="#E1A01E"/>
+            <!-- Divider -->
+            <rect x="54" y="0" width="1" height="40" fill="#50C1C1" fill-opacity="0.35"/>
+            <!-- Wordmark -->
+            <text x="68" y="28" fill="#95DFDB" style="font-family:'Segoe UI',sans-serif;font-size:22px;font-weight:500;letter-spacing:-0.005em">financial models</text>
+          </svg>
+        </div>
+        <div class="logo-tag">Horizontal — dark background</div>
+      </div>
+
+      <!-- Light icon -->
+      <div class="logo-card logo-variant-light">
+        <div class="logo-stage" style="background:#F0FAFA">
+          <svg width="60" height="42" viewBox="0 0 60 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0"  y="0"  width="17" height="12" rx="2.5" fill="#95DFDB"/>
+            <rect x="21" y="0"  width="17" height="12" rx="2.5" fill="#008282"/>
+            <rect x="43" y="0"  width="17" height="12" rx="2.5" fill="#005A5A"/>
+            <rect x="0"  y="15" width="17" height="12" rx="2.5" fill="#95DFDB"/>
+            <rect x="21" y="15" width="17" height="12" rx="2.5" fill="#008282"/>
+            <rect x="43" y="15" width="17" height="12" rx="2.5" fill="#005A5A"/>
+            <rect x="0"  y="30" width="17" height="12" rx="2.5" fill="#95DFDB"/>
+            <rect x="21" y="30" width="17" height="12" rx="2.5" fill="#008282"/>
+            <rect x="43" y="30" width="17" height="12" rx="2.5" fill="#E1A01E"/>
+          </svg>
+        </div>
+        <div class="logo-tag">Icon — light</div>
+      </div>
+
+      <!-- Dark icon -->
+      <div class="logo-card logo-variant-dark">
+        <div class="logo-stage" style="background:#012D2C">
+          <svg width="60" height="42" viewBox="0 0 60 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0"  y="0"  width="17" height="12" rx="2.5" fill="#95DFDB"/>
+            <rect x="21" y="0"  width="17" height="12" rx="2.5" fill="#50C1C1"/>
+            <rect x="43" y="0"  width="17" height="12" rx="2.5" fill="#008282"/>
+            <rect x="0"  y="15" width="17" height="12" rx="2.5" fill="#95DFDB"/>
+            <rect x="21" y="15" width="17" height="12" rx="2.5" fill="#50C1C1"/>
+            <rect x="43" y="15" width="17" height="12" rx="2.5" fill="#008282"/>
+            <rect x="0"  y="30" width="17" height="12" rx="2.5" fill="#95DFDB"/>
+            <rect x="21" y="30" width="17" height="12" rx="2.5" fill="#50C1C1"/>
+            <rect x="43" y="30" width="17" height="12" rx="2.5" fill="#E1A01E"/>
+          </svg>
+        </div>
+        <div class="logo-tag">Icon — dark</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COLOURS ─────────────────────────────────────────── -->
+  <section class="section" id="colours">
+    <div class="section-head">
+      <span class="phase-tag">Phase 02</span>
+      <div>
+        <div class="section-title">Colours</div>
+        <div class="section-desc">Six brand colours + neutrals. All text pairings meet WCAG AA.</div>
+      </div>
+    </div>
+
+    <div class="cols-4">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#005A5A"><span class="swatch-hex">#005A5A</span></div>
+        <div class="swatch-info"><div class="swatch-name">Teal 900</div><div class="swatch-role">Primary · 8.05:1 AAA</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#008282"><span class="swatch-hex">#008282</span></div>
+        <div class="swatch-info"><div class="swatch-name">Teal 700</div><div class="swatch-role">Secondary · 4.65:1 AA</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#50C1C1"><span class="swatch-hex">#50C1C1</span></div>
+        <div class="swatch-info"><div class="swatch-name">Teal 400</div><div class="swatch-role">Dark bg only</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#95DFDB"><span class="swatch-hex" style="color:#012D2C;background:rgba(1,45,44,.15)">#95DFDB</span></div>
+        <div class="swatch-info"><div class="swatch-name">Teal 100</div><div class="swatch-role">Surface / badge</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E1A01E"><span class="swatch-hex">#E1A01E</span></div>
+        <div class="swatch-info"><div class="swatch-name">Amber</div><div class="swatch-role">Output cells</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C41E3A"><span class="swatch-hex">#C41E3A</span></div>
+        <div class="swatch-info"><div class="swatch-name">Red</div><div class="swatch-role">Error · 5.84:1 AA</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#012D2C"><span class="swatch-hex">#012D2C</span></div>
+        <div class="swatch-info"><div class="swatch-name">Ink</div><div class="swatch-role">Dark surface</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F0FAFA;border-bottom:1px solid #D0ECEB"><span class="swatch-hex" style="color:#005A5A;background:rgba(0,90,90,.10)">#F0FAFA</span></div>
+        <div class="swatch-info"><div class="swatch-name">Off-white</div><div class="swatch-role">Page background</div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Approved text pairings</div>
+    <div class="contrast-grid">
+      <div class="cpair" style="background:#005A5A;border-color:#003D3D">
+        <div class="cpair-sample" style="color:#FFFFFF">Sample text</div>
+        <div class="cpair-meta" style="color:#95DFDB">White on Teal 900 · 8.05 AAA</div>
+      </div>
+      <div class="cpair" style="background:#FFFFFF;border-color:#D0ECEB">
+        <div class="cpair-sample" style="color:#005A5A">Sample text</div>
+        <div class="cpair-meta" style="color:#008282">Teal 900 on White · 8.05 AAA</div>
+      </div>
+      <div class="cpair" style="background:#95DFDB;border-color:#7BCFCA">
+        <div class="cpair-sample" style="color:#012D2C">Sample text</div>
+        <div class="cpair-meta" style="color:#012D2C;opacity:.6">Ink on Teal 100 · 9.81 AAA</div>
+      </div>
+      <div class="cpair" style="background:#E1A01E;border-color:#C48A16">
+        <div class="cpair-sample" style="color:#012D2C">Output value</div>
+        <div class="cpair-meta" style="color:#012D2C;opacity:.6">Ink on Amber · 6.55 AA</div>
+      </div>
+      <div class="cpair" style="background:#012D2C;border-color:#0A5050">
+        <div class="cpair-sample" style="color:#95DFDB">Sample text</div>
+        <div class="cpair-meta" style="color:#50C1C1">Teal 100 on Ink · 9.81 AAA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TYPOGRAPHY ──────────────────────────────────────── -->
+  <section class="section" id="type">
+    <div class="section-head">
+      <span class="phase-tag">Phase 03</span>
+      <div>
+        <div class="section-title">Typography</div>
+        <div class="section-desc">Segoe UI — 5 sizes, 2 weights. No web font download needed.</div>
+      </div>
+    </div>
+
+    <div class="cols-2" style="margin-bottom:24px">
+      <div class="card">
+        <div class="card-title" style="font-size:1.5rem;margin-bottom:8px">Segoe UI</div>
+        <div style="font-size:0.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px">UI & Body</div>
+        <div class="row" style="gap:6px">
+          <span style="font-size:0.75rem;padding:2px 8px;background:var(--surface-in);border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-weight:400">400 Regular</span>
+          <span style="font-size:0.75rem;padding:2px 8px;background:var(--surface-in);border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-weight:600">600 Semibold</span>
+        </div>
+        <div class="card-body" style="margin-top:12px">Use for all text: headings, body, labels, captions, buttons.</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="font-size:1.5rem;font-family:'Segoe UI Mono','Cascadia Mono',monospace;margin-bottom:8px">Segoe UI Mono</div>
+        <div style="font-size:0.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px">Numbers & Data</div>
+        <div class="row" style="gap:6px">
+          <span style="font-size:0.75rem;padding:2px 8px;background:var(--surface-in);border:1px solid var(--border);border-radius:4px;color:var(--text-muted)">400 Regular</span>
+        </div>
+        <div class="card-body" style="margin-top:12px">Use for financial values, table cells, model outputs, and code.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <div class="type-row">
+        <div class="type-meta"><div class="type-token">--text-xl</div><div class="type-spec">28px · Semibold</div></div>
+        <div style="font-size:1.75rem;font-weight:600;line-height:1.25;color:var(--text)">Financial Models</div>
+      </div>
+      <div class="rule"></div>
+      <div class="type-row">
+        <div class="type-meta"><div class="type-token">--text-lg</div><div class="type-spec">20px · Semibold</div></div>
+        <div style="font-size:1.25rem;font-weight:600;line-height:1.25;color:var(--text)">Quarterly Revenue Model</div>
+      </div>
+      <div class="rule"></div>
+      <div class="type-row">
+        <div class="type-meta"><div class="type-token">--text-md</div><div class="type-spec">16px · Regular</div></div>
+        <div style="font-size:1rem;line-height:1.6;color:var(--text)">The model projects revenue growth of 14.1% year-on-year, driven by organic expansion in enterprise and improved pricing across all product lines.</div>
+      </div>
+      <div class="rule"></div>
+      <div class="type-row">
+        <div class="type-meta"><div class="type-token">--text-sm</div><div class="type-spec">14px · Regular</div></div>
+        <div style="font-size:0.875rem;color:var(--text)">Secondary labels, table content, input text, card body copy</div>
+      </div>
+      <div class="rule"></div>
+      <div class="type-row">
+        <div class="type-meta"><div class="type-token">--text-xs</div><div class="type-spec">12px · Regular</div></div>
+        <div style="font-size:0.75rem;color:var(--text-muted)">Captions, metadata, timestamps, helper text</div>
+      </div>
+      <div class="rule"></div>
+      <div class="type-row">
+        <div class="type-meta"><div class="type-token">--font-mono</div><div class="type-spec">14px · Tabular</div></div>
+        <div style="font-family:'Segoe UI Mono','Cascadia Mono',monospace;font-variant-numeric:tabular-nums;font-size:0.875rem;color:var(--text)">£12,840,000 &nbsp;·&nbsp; 23.1% &nbsp;·&nbsp; +210 bps</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SPACING ─────────────────────────────────────────── -->
+  <section class="section" id="spacing">
+    <div class="section-head">
+      <span class="phase-tag">Phase 04</span>
+      <div>
+        <div class="section-title">Spacing & Grid</div>
+        <div class="section-desc">4px base unit. 9-step scale. 12-column desktop grid.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div class="sp-row"><div class="sp-bar" style="width:4px"></div><div class="sp-token">--space-1</div><div class="sp-val">4px</div><div class="sp-use">Icon/label gap</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:8px"></div><div class="sp-token">--space-2</div><div class="sp-val">8px</div><div class="sp-use">Badge padding, tight gaps</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:12px"></div><div class="sp-token">--space-3</div><div class="sp-val">12px</div><div class="sp-use">Button vertical padding</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:16px;background:var(--teal-700)"></div><div class="sp-token" style="font-weight:600">--space-4 ★</div><div class="sp-val">16px</div><div class="sp-use">Base — card padding, inputs</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:20px"></div><div class="sp-token">--space-5</div><div class="sp-val">20px</div><div class="sp-use">Card comfortable padding</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:24px"></div><div class="sp-token">--space-6</div><div class="sp-val">24px</div><div class="sp-use">Section gaps</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:32px"></div><div class="sp-token">--space-8</div><div class="sp-val">32px</div><div class="sp-use">Panel padding</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:48px"></div><div class="sp-token">--space-12</div><div class="sp-val">48px</div><div class="sp-use">Page vertical rhythm</div></div>
+      <div class="sp-row"><div class="sp-bar" style="width:64px"></div><div class="sp-token">--space-16</div><div class="sp-val">64px</div><div class="sp-use">Hero padding</div></div>
+    </div>
+  </section>
+
+  <!-- ── COMPONENTS ──────────────────────────────────────── -->
+  <section class="section" id="components">
+    <div class="section-head">
+      <span class="phase-tag">Phase 05</span>
+      <div>
+        <div class="section-title">UI Components</div>
+        <div class="section-desc">Buttons, badges, inputs, cards, table. Toggle the theme button above to preview dark mode.</div>
+      </div>
+    </div>
+
+    <div class="sub-label">Buttons</div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-outline">Outline</button>
+      <button class="btn btn-danger">Danger</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+    </div>
+    <div class="row" style="margin-bottom:28px">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+    </div>
+
+    <div class="sub-label">Badges</div>
+    <div class="row" style="margin-bottom:28px">
+      <span class="badge badge-teal">Input</span>
+      <span class="badge badge-amber">Output</span>
+      <span class="badge badge-green">+12.4%</span>
+      <span class="badge badge-red">Error</span>
+      <span class="badge badge-neutral">Draft</span>
+    </div>
+
+    <div class="sub-label">Status messages</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px">
+      <div class="status ok"><span class="status-icon">✓</span>Model validated — all 48 assumptions within acceptable ranges.</div>
+      <div class="status warn"><span class="status-icon">⚠</span>Sensitivity thresholds exceeded on 3 input cells. Review WACC assumptions.</div>
+      <div class="status err"><span class="status-icon">✕</span>Circular reference detected in row 142. Model cannot be saved until resolved.</div>
+      <div class="status info"><span class="status-icon">ℹ</span>Last updated 14 minutes ago · Version 3.2 · Shared with 4 colleagues</div>
+    </div>
+
+    <div class="sub-label">Inputs</div>
+    <div class="cols-2" style="margin-bottom:28px;max-width:560px">
+      <div class="field">
+        <label class="field-label">Discount Rate (%)</label>
+        <input class="input input-mono" type="text" value="8.50">
+        <span class="field-hint">Enter WACC as a percentage</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Terminal Growth Rate</label>
+        <input class="input input-mono" type="text" placeholder="2.50">
+        <span class="field-hint">Long-run GDP proxy</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Revenue Growth Rate</label>
+        <input class="input input-mono is-error" type="text" value="120">
+        <span class="field-error">Must be between 0 and 100%</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Projection Period</label>
+        <input class="input input-mono" type="text" value="5">
+        <span class="field-hint">Years (typically 3–10)</span>
+      </div>
+    </div>
+
+    <div class="sub-label">Metric cards</div>
+    <div class="cols-4" style="margin-bottom:28px">
+      <div class="card-metric">
+        <div class="m-label">Revenue</div>
+        <div class="m-value">£55.4m</div>
+        <div class="m-delta up">▲ +14.1%</div>
+      </div>
+      <div class="card-metric" style="border-left-color:#005A5A">
+        <div class="m-label">EBITDA</div>
+        <div class="m-value">£12.8m</div>
+        <div class="m-delta up">▲ +25.5%</div>
+      </div>
+      <div class="card-metric output">
+        <div class="m-label">EBITDA Margin</div>
+        <div class="m-value">23.1%</div>
+        <div class="m-delta up">▲ +210bps</div>
+      </div>
+      <div class="card-metric" style="border-left-color:#C41E3A">
+        <div class="m-label">Net Debt</div>
+        <div class="m-value">£9.4m</div>
+        <div class="m-delta down">▼ −26.6%</div>
+      </div>
+    </div>
+
+    <div class="sub-label">Content cards</div>
+    <div class="cols-3" style="margin-bottom:28px">
+      <div class="card">
+        <div class="card-title">3-Statement Model</div>
+        <div class="card-body">Integrated income statement, balance sheet and cash flow with built-in debt schedule and returns analysis.</div>
+        <div class="card-foot"><button class="btn btn-outline btn-sm">Open Model</button></div>
+      </div>
+      <div class="card">
+        <div class="card-title">DCF Valuation</div>
+        <div class="card-body">10-year projection with WACC sensitivity table, terminal value scenarios, and equity bridge.</div>
+        <div class="card-foot"><button class="btn btn-outline btn-sm">Open Model</button></div>
+      </div>
+      <div class="card output-card">
+        <div class="card-title">Equity Value: £148.2m</div>
+        <div class="card-body">Blended EV/EBITDA of 11.6× and DCF implied value of £152.4m at 8.5% WACC.</div>
+        <div class="card-foot"><span class="badge badge-amber">Model Output</span></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Data table</div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="r">2022A</th>
+            <th class="r">2023A</th>
+            <th class="r">2024A</th>
+            <th class="r">2025F</th>
+            <th class="r">YoY %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Revenue</td><td class="r">£38.2m</td><td class="r">£42.1m</td><td class="r">£48.6m</td><td class="out">£55.4m</td><td class="r up">+14.1%</td></tr>
+          <tr><td>Gross Profit</td><td class="r">£22.1m</td><td class="r">£24.8m</td><td class="r">£29.2m</td><td class="out">£33.8m</td><td class="r up">+15.7%</td></tr>
+          <tr><td>EBITDA</td><td class="r">£6.9m</td><td class="r">£8.4m</td><td class="r">£10.2m</td><td class="out">£12.8m</td><td class="r up">+25.5%</td></tr>
+          <tr><td>EBITDA Margin</td><td class="r">18.1%</td><td class="r">19.9%</td><td class="r">21.0%</td><td class="out">23.1%</td><td class="r up">+210bps</td></tr>
+          <tr><td>Net Debt</td><td class="r">£19.4m</td><td class="r">£15.2m</td><td class="r">£12.8m</td><td class="out">£9.4m</td><td class="r down">−26.6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── VOICE ────────────────────────────────────────────── -->
+  <section class="section" id="voice">
+    <div class="section-head">
+      <span class="phase-tag">Phase 06</span>
+      <div>
+        <div class="section-title">Voice & Tone</div>
+        <div class="section-desc">Four pillars. Plain copy rules.</div>
+      </div>
+    </div>
+
+    <div class="cols-2" style="margin-bottom:24px">
+      <div class="pillar" style="border-left-color:var(--teal-900)">
+        <div class="pillar-title" style="color:var(--teal-900)">Precision</div>
+        <div class="pillar-body">Every number is deliberate. Clarity and accuracy — no approximations, no hand-waving.</div>
+      </div>
+      <div class="pillar" style="border-left-color:var(--teal-700)">
+        <div class="pillar-title" style="color:var(--teal-700)">Rigour</div>
+        <div class="pillar-body">Assumptions are stated. Sources are cited. Confidence is earned, not asserted.</div>
+      </div>
+      <div class="pillar" style="border-left-color:var(--teal-400)">
+        <div class="pillar-title" style="color:var(--teal-700)">Transparency</div>
+        <div class="pillar-body">We show our working. We explain the 'why' behind every decision.</div>
+      </div>
+      <div class="pillar" style="border-left-color:var(--amber)">
+        <div class="pillar-title" style="color:var(--amber)">Accessibility</div>
+        <div class="pillar-body">Complex ideas deserve clear language. We translate without dumbing down.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="do-row"><strong>DO</strong> Use specific, verified figures with currency and time period</div>
+      <div class="dont-row"><strong>DON'T</strong> Use vague amplifiers: "significant", "robust growth", "strong"</div>
+      <div class="do-row"><strong>DO</strong> Name the model type and methodology</div>
+      <div class="dont-row"><strong>DON'T</strong> Make forward-looking statements without caveats</div>
+      <div class="do-row"><strong>DO</strong> Use active voice: "the model projects £55.4m revenue"</div>
+      <div class="dont-row"><strong>DON'T</strong> Substitute a chart or design element for missing data</div>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- FOOTER — 4: all four pillars -->
+<footer class="footer">
+  <div class="footer-left">
+    <span class="footer-name">Roman Zajic</span>
+    <span class="footer-meta">Brand Style Guide · financial&nbsp;models · © 2025</span>
+  </div>
+  <div class="footer-tags">
+    <span class="footer-tag">Precision</span>
+    <span class="footer-tag">Rigour</span>
+    <span class="footer-tag">Transparency</span>
+    <span class="footer-tag">Accessibility</span>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html   = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-btn').textContent = isDark ? 'Light' : 'Dark';
+}
+</script>
+</body>
+</html>
