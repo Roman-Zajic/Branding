@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<title>financial&nbsp;models — Lite Grid</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+<style>
+:root {
+  --font: "Segoe UI", sans-serif; --teal-900: #005A5A; --teal-700: #008282; --teal-100: #95DFDB;
+  --text: #005A5A; --surface: #FFFFFF; --bg: #F0FAFA; --border: #D0ECEB; --r: 8px; --cw: 180px;
+}
+[data-theme="dark"] { --text: #95DFDB; --surface: #032F2E; --bg: #012D2C; --border: #0A5050; }
+
+body { font-family: var(--font); background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; height: 100vh; }
+nav { background: var(--teal-900); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+.brand { color: var(--teal-100); font-weight: bold; text-decoration: none; }
+
+.main { padding: 20px; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.grid-box { flex: 1; overflow: auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); }
+
+table { border-collapse: collapse; table-layout: fixed; width: max-content; }
+th, td { width: var(--cw); padding: 10px 16px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+th { position: sticky; top: 0; background: var(--bg); z-index: 10; text-align: left; cursor: pointer; text-transform: uppercase; font-size: 11px; }
+
+.filter-btn { float: right; background: none; border: none; cursor: pointer; color: var(--teal-700); }
+#filter-pop { position: fixed; background: var(--surface); border: 1px solid var(--teal-700); padding: 15px; border-radius: var(--r); display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 200px; }
+.f-list { max-height: 150px; overflow-y: auto; margin: 10px 0; border: 1px solid var(--border); }
+.f-item { display: block; padding: 4px; font-size: 12px; cursor: pointer; }
+input[type="text"] { width: 100%; box-sizing: border-box; padding: 6px; margin-bottom: 5px; }
+
+.btn { padding: 6px 12px; border-radius: 4px; cursor: pointer; border: 1px solid var(--border); background: var(--teal-900); color: #fff; font-size: 12px; }
+.btn-out { background: none; color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="#">financial&nbsp;models</a>
+  <button class="btn btn-out" style="color:white" onclick="document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark'">Theme</button>
+</nav>
+
+<div class="main">
+  <div style="margin-bottom:15px">
+    <input type="file" id="up" hidden onchange="loadFile(this)">
+    <button class="btn" onclick="document.getElementById('up').click()">Upload Excel</button>
+    <span id="info" style="margin-left:10px; font-size:12px"></span>
+  </div>
+
+  <div class="grid-box" id="box" onscroll="render()">
+    <table>
+      <thead id="head"></thead>
+      <tbody id="body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="filter-pop">
+  <input type="text" id="f-srch" placeholder="Search..." oninput="filterItems(this.value)">
+  <label class="f-item"><input type="checkbox" id="f-all" checked onchange="toggleAll(this.checked)"> (Select All)</label>
+  <div class="f-list" id="f-list"></div>
+  <button class="btn" style="width:100%" onclick="applyFilter()">Apply</button>
+</div>
+
+<script>
+let data = [], filtered = [], headers = [], activeF = {}, curCol = null;
+const RH = 41; // Row height
+
+function loadFile(input) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b = XLSX.read(e.target.result, {type:'binary'});
+    const raw = XLSX.utils.sheet_to_json(b.Sheets[b.SheetNames[0]], {header:1});
+    headers = raw[0]; data = raw.slice(1); filtered = [...data];
+    init();
+  };
+  reader.readAsBinaryString(input.files[0]);
+}
+
+function init() {
+  document.getElementById('head').innerHTML = `<tr>${headers.map((h,i) => `
+    <th onclick="sort(${i})">${h||''} <button class="filter-btn" onclick="openF(event, ${i})">▽</button></th>`).join('')}</tr>`;
+  render();
+}
+
+function render() {
+  const box = document.getElementById('box'), start = Math.floor(box.scrollTop / RH), end = start + 20;
+  document.getElementById('info').innerText = `${filtered.length} rows`;
+  
+  const topPad = start * RH, botPad = Math.max(0, (filtered.length - end) * RH);
+  document.getElementById('body').innerHTML = `
+    <tr style="height:${topPad}px"></tr>
+    ${filtered.slice(start, end).map(r => `<tr>${r.map(c => `<td>${c??''}</td>`).join('')}</tr>`).join('')}
+    <tr style="height:${botPad}px"></tr>`;
+}
+
+function sort(i) {
+  this.asc = !this.asc;
+  filtered.sort((a,b) => (a[i] > b[i] ? 1 : -1) * (this.asc ? 1 : -1));
+  render();
+}
+
+function openF(e, i) {
+  e.stopPropagation(); curCol = i;
+  const pop = document.getElementById('filter-pop'), vals = [...new Set(data.map(r => String(r[i]??'')))].sort();
+  pop.style.display = 'block'; pop.style.top = e.clientY + 'px'; pop.style.left = (e.clientX - 200) + 'px';
+  
+  document.getElementById('f-list').innerHTML = vals.map(v => `
+    <label class="f-item"><input type="checkbox" class="f-cb" value="${v}" ${!activeF[i] || activeF[i].has(v) ? 'checked' : ''}> ${v||'(Empty)'}</label>`).join('');
+}
+
+function toggleAll(chk) { document.querySelectorAll('.f-cb').forEach(c => c.checked = chk); }
+
+function filterItems(val) {
+  document.querySelectorAll('.f-item').forEach(el => el.style.display = el.innerText.toLowerCase().includes(val.toLowerCase()) ? 'block' : 'none');
+}
+
+function applyFilter() {
+  const sel = [...document.querySelectorAll('.f-cb:checked')].map(c => c.value);
+  activeF[curCol] = new Set(sel);
+  filtered = data.filter(r => Object.keys(activeF).every(k => activeF[k].has(String(r[k]??''))));
+  document.getElementById('filter-pop').style.display = 'none';
+  render();
+}
+
+function sort(i) {
+  this.dir = (this.col === i) ? !this.dir : true; this.col = i;
+  filtered.sort((a,b) => (a[i] > b[i] ? 1 : -1) * (this.dir ? 1 : -1));
+  render();
+}
+</script>
+</body>
+</html>
