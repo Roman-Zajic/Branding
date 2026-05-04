@@ -5,281 +5,143 @@
 <title>financial models — Lite Grid</title>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 <style>
-/* ── Design Tokens ─────────────────────────────────────────── */
+/* ── Tokens ─────────────────────────────────────────────────── */
 :root {
-  --teal-900: #005A5A;
-  --teal-700: #008282;
-  --teal-400: #50C1C1;
-  --teal-100: #95DFDB;
-  --amber:    #E1A01E;
-  --red:      #C41E3A;
-  --ink:      #012D2C;
-
-  --text:    #005A5A;
-  --muted:   #008282;
-  --bg:      #F0FAFA;
-  --surface: #FFFFFF;
-  --border:  #D0ECEB;
-  --ph:      #7A9E9E;
-
-  --font:  "Segoe UI", system-ui, sans-serif;
-  --mono:  "Segoe UI Mono", "Cascadia Mono", ui-monospace, monospace;
-
-  --r-card:  10px;
-  --r-btn:   6px;
-  --r-input: 6px;
-  --cw: 200px;
+  --teal-900:#005A5A; --teal-700:#008282; --teal-400:#50C1C1; --teal-100:#95DFDB;
+  --amber:#E1A01E; --ink:#012D2C;
+  --text:#005A5A; --muted:#008282; --bg:#F0FAFA; --surface:#FFFFFF; --border:#D0ECEB; --ph:#7A9E9E;
+  --font:"Segoe UI",system-ui,sans-serif;
+  --mono:"Segoe UI Mono","Cascadia Mono",ui-monospace,monospace;
+  --r:10px; --rb:6px;
 }
 [data-theme="dark"] {
-  --text:    #95DFDB;
-  --muted:   #50C1C1;
-  --bg:      #012D2C;
-  --surface: #032F2E;
-  --border:  #0A5050;
-  --ph:      #3A6E6E;
+  --text:#95DFDB; --muted:#50C1C1; --bg:#012D2C; --surface:#032F2E; --border:#0A5050; --ph:#3A6E6E;
 }
+*,*::before,*::after { box-sizing:border-box; }
+body { font-family:var(--font); font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  background:var(--bg); color:var(--text); margin:0; display:flex; flex-direction:column; height:100vh; }
 
-*, *::before, *::after { box-sizing: border-box; }
+/* ── Nav ────────────────────────────────────────────────────── */
+nav { position:sticky; top:0; z-index:200; height:52px; background:var(--teal-900);
+  padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.brand { font-size:16px; font-weight:600; color:var(--teal-100); text-decoration:none; }
 
-body {
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn { display:inline-flex; align-items:center; gap:6px; padding:9px 20px; font-family:var(--font);
+  font-size:14px; font-weight:600; line-height:1; border-radius:var(--rb); border:1px solid transparent;
+  cursor:pointer; transition:background 130ms,color 130ms,border-color 130ms;
+  background:var(--teal-900); color:#fff; border-color:var(--teal-900); }
+.btn:hover { background:var(--teal-700); border-color:var(--teal-700); }
+[data-theme="dark"] .btn { background:var(--teal-400); color:var(--ink); border-color:var(--teal-400); }
+[data-theme="dark"] .btn:hover { background:var(--teal-100); border-color:var(--teal-100); }
+.btn-out { background:transparent; color:var(--text); border-color:var(--border); }
+.btn-out:hover { color:var(--teal-700); border-color:var(--teal-700); }
+nav .btn-out { color:var(--teal-100); border-color:rgba(149,223,219,.4); font-size:13px; padding:6px 14px; }
+nav .btn-out:hover { background:rgba(149,223,219,.12); border-color:rgba(149,223,219,.7); }
 
-/* ── Navbar ────────────────────────────────────────────────── */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  height: 52px;
-  background: var(--teal-900);
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-.brand { font-size: 16px; font-weight: 600; color: var(--teal-100); text-decoration: none; }
+/* ── Inputs ─────────────────────────────────────────────────── */
+input[type="text"] { width:100%; padding:9px 12px; font-family:var(--font); font-size:14px;
+  border:1px solid var(--border); border-radius:var(--rb); background:var(--surface); color:var(--text);
+  outline:none; transition:border-color 130ms,box-shadow 130ms; }
+input[type="text"]::placeholder { color:var(--ph); }
+input[type="text"]:hover { border-color:var(--teal-700); }
+input[type="text"]:focus { border-color:var(--teal-700); box-shadow:0 0 0 3px rgba(0,130,130,.15); }
+[data-theme="dark"] input[type="text"]:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(80,193,193,.20); }
 
-/* ── Buttons ───────────────────────────────────────────────── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 20px;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
-  border-radius: var(--r-btn);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background 130ms, color 130ms, border-color 130ms;
-  background: var(--teal-900);
-  color: #fff;
-  border-color: var(--teal-900);
-}
-.btn:hover { background: var(--teal-700); border-color: var(--teal-700); }
-[data-theme="dark"] .btn { background: var(--teal-400); color: var(--ink); border-color: var(--teal-400); }
-[data-theme="dark"] .btn:hover { background: var(--teal-100); border-color: var(--teal-100); }
-.btn-out { background: transparent; color: var(--text); border-color: var(--border); }
-.btn-out:hover { color: var(--teal-700); border-color: var(--teal-700); }
-nav .btn-out { color: var(--teal-100); border-color: rgba(149,223,219,.4); font-size: 13px; padding: 6px 14px; }
-nav .btn-out:hover { background: rgba(149,223,219,.12); border-color: rgba(149,223,219,.7); }
-#filter-pop .btn { width: 100%; justify-content: center; margin-top: 2px; }
+/* ── Layout ─────────────────────────────────────────────────── */
+.main { padding:20px; flex:1; display:flex; flex-direction:column; overflow:hidden; }
+.toolbar { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+#info { font-size:12px; color:var(--muted); margin-left:auto; }
 
-/* ── Inputs ────────────────────────────────────────────────── */
-input[type="text"] {
-  width: 100%;
-  padding: 9px 12px;
-  font-family: var(--font);
-  font-size: 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-input);
-  background: var(--surface);
-  color: var(--text);
-  outline: none;
-  transition: border-color 130ms, box-shadow 130ms;
-}
-input[type="text"]::placeholder { color: var(--ph); }
-input[type="text"]:hover  { border-color: var(--teal-700); }
-input[type="text"]:focus  { border-color: var(--teal-700); box-shadow: 0 0 0 3px rgba(0,130,130,.15); }
-[data-theme="dark"] input[type="text"]:focus { border-color: var(--teal-400); box-shadow: 0 0 0 3px rgba(80,193,193,.20); }
+/* ── Drop zone ──────────────────────────────────────────────── */
+.drop-zone { display:flex; align-items:center; gap:10px; padding:10px 20px;
+  border:2px dashed var(--border); border-radius:var(--r); cursor:pointer;
+  transition:border-color 130ms,background 130ms; background:var(--surface); font-size:13px; color:var(--muted); }
+.drop-zone:hover,.drop-zone.drag-over { border-color:var(--teal-700); background:var(--bg); color:var(--teal-700); }
+.drop-label { pointer-events:none; }
+#drop-filename { font-weight:600; color:var(--text); pointer-events:none; }
 
-/* ── Layout ────────────────────────────────────────────────── */
-.main { padding: 20px; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-#info { font-size: 12px; color: var(--muted); }
+/* ── Grid box ───────────────────────────────────────────────── */
+.grid-box { flex:1; overflow:auto; background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); box-shadow:0 1px 4px rgba(1,45,44,.10); position:relative; }
+.empty-state { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--ph); font-size:13px; pointer-events:none; }
 
-/* ── Drop area ──────────────────────────────────────────────── */
-.drop-zone {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  border: 2px dashed var(--border);
-  border-radius: var(--r-card);
-  cursor: pointer;
-  transition: border-color 130ms, background 130ms;
-  background: var(--surface);
-  font-size: 13px;
-  color: var(--muted);
-}
-.drop-zone:hover, .drop-zone.drag-over { border-color: var(--teal-700); background: var(--bg); color: var(--teal-700); }
-.drop-label { pointer-events: none; }
-#drop-filename { font-weight: 600; color: var(--text); pointer-events: none; }
+/* ── Table ──────────────────────────────────────────────────── */
+table { border-collapse:collapse; table-layout:fixed; width:max-content; }
+th,td { padding:10px 16px; border-right:1px solid var(--border); border-bottom:1px solid var(--border);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:14px; }
+th { position:sticky; top:0; z-index:10; background:var(--bg); text-align:left;
+  text-transform:uppercase; font-size:11px; font-weight:600; letter-spacing:0.06em;
+  color:var(--muted); border-bottom:2px solid var(--border); user-select:none;
+  cursor:pointer; position:relative; /* for resize handle */ }
+th.filtered { color:var(--teal-900); }
+[data-theme="dark"] th.filtered { color:var(--teal-100); }
+th.sort-asc  .th-label::after { content:' ↑'; opacity:.5; }
+th.sort-desc .th-label::after { content:' ↓'; opacity:.5; }
+th.drag-over { border-left:2px solid var(--teal-700); }
+th.dragging  { opacity:.4; }
 
-/* ── Grid box ──────────────────────────────────────────────── */
-.grid-box {
-  flex: 1;
-  overflow: auto;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-card);
-  box-shadow: 0 1px 4px rgba(1,45,44,.10);
-  position: relative;
-}
+td { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+tbody tr:hover td { background:var(--bg); }
 
-/* ── Empty state ────────────────────────────────────────────── */
-.empty-state {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ph);
-  font-size: 13px;
-  pointer-events: none;
-}
+/* ── Total column highlight ─────────────────────────────────── */
+td.has-total { background:rgba(0,130,130,.05); border-right:2px solid var(--teal-100); }
+[data-theme="dark"] td.has-total { background:rgba(80,193,193,.07); }
+tbody tr:hover td.has-total { background:rgba(0,130,130,.10); }
 
-/* ── Table ─────────────────────────────────────────────────── */
-table { border-collapse: collapse; table-layout: fixed; width: max-content; }
-th, td {
-  width: var(--cw);
-  padding: 10px 16px;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 14px;
-}
-th {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--bg);
-  text-align: left;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  border-bottom: 2px solid var(--border);
-  user-select: none;
-}
-th.filtered { color: var(--teal-900); }
-[data-theme="dark"] th.filtered { color: var(--teal-100); }
+/* ── Totals footer ──────────────────────────────────────────── */
+tfoot { display:none; }
+tfoot.visible { display:table-footer-group; }
+tfoot td { position:sticky; bottom:0; z-index:10; background:var(--teal-900); color:var(--teal-100);
+  font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600; font-size:13px;
+  border-top:2px solid var(--teal-700); border-bottom:none; }
+tfoot td.total-value { color:#fff; }
+[data-theme="dark"] tfoot td { background:var(--ink); }
 
-/* Sort indicator */
-th.sort-asc::after  { content: ' ↑'; opacity: .5; }
-th.sort-desc::after { content: ' ↓'; opacity: .5; }
+/* ── Header pill buttons ────────────────────────────────────── */
+.th-btns { float:right; display:inline-flex; gap:3px; margin-top:1px; }
+.pill-btn { display:inline-flex; align-items:center; background:none; border:1px solid var(--border);
+  border-radius:999px; cursor:pointer; color:var(--muted); padding:1px 7px;
+  font-family:var(--font); font-size:10px; font-weight:600; letter-spacing:0.04em;
+  text-transform:uppercase; transition:color 130ms,border-color 130ms,background 130ms; }
+.pill-btn:hover { color:var(--teal-900); border-color:var(--teal-700); background:var(--surface); }
+.pill-btn.active-filter { color:var(--ink); background:var(--amber); border-color:var(--amber); }
+.pill-btn.active-total  { color:#fff; background:var(--teal-700); border-color:var(--teal-700); }
 
-td { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-tbody tr:hover td { background: var(--bg); }
+/* ── Resize handle ──────────────────────────────────────────── */
+.resize-handle { position:absolute; right:0; top:0; bottom:0; width:6px;
+  cursor:col-resize; z-index:1; border-radius:0 3px 3px 0; }
+.resize-handle:hover { background:var(--teal-700); opacity:.4; }
+body.resizing { cursor:col-resize; user-select:none; }
+body.resizing * { pointer-events:none; }
+body.resizing .resize-handle { pointer-events:auto; }
 
-/* ── Total column cells ─────────────────────────────────────── */
-td.has-total {
-  background: rgba(0,130,130,.05);
-  border-right: 2px solid var(--teal-100);
-}
-[data-theme="dark"] td.has-total { background: rgba(80,193,193,.07); }
-tbody tr:hover td.has-total { background: rgba(0,130,130,.10); }
+/* ── Popups (shared base) ───────────────────────────────────── */
+.popup { position:fixed; background:var(--surface); border:1px solid var(--teal-700);
+  padding:12px; border-radius:var(--r); display:none; z-index:300;
+  box-shadow:0 4px 16px rgba(1,45,44,.18); width:224px; }
+.popup .btn { width:100%; justify-content:center; margin-top:2px; }
+.f-list { max-height:160px; overflow-y:auto; margin:8px 0 10px;
+  border:1px solid var(--border); border-radius:6px; }
+.f-item { display:flex; align-items:center; gap:8px; padding:5px 8px;
+  font-size:13px; font-family:var(--font); cursor:pointer; color:var(--text); }
+.f-item:hover { background:var(--bg); }
+.f-item input[type="checkbox"] { appearance:none; -webkit-appearance:none; width:15px; height:15px;
+  flex-shrink:0; border:1.5px solid var(--border); border-radius:3px; background:var(--surface);
+  cursor:pointer; position:relative; transition:background 130ms,border-color 130ms; }
+.f-item input[type="checkbox"]:hover { border-color:var(--teal-700); }
+.f-item input[type="checkbox"]:checked { background:var(--teal-700); border-color:var(--teal-700); }
+.f-item input[type="checkbox"]:indeterminate { background:var(--teal-100); border-color:var(--teal-700); }
+.f-item input[type="checkbox"]:checked::after { content:''; position:absolute; left:3px; top:0;
+  width:5px; height:9px; border:2px solid #fff; border-top:none; border-left:none; transform:rotate(45deg); }
+.popup-header { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:8px; }
+#filter-pop > .f-item { border-bottom:1px solid var(--border); font-weight:600; font-size:12px; color:var(--muted); }
 
-/* ── Totals footer row ──────────────────────────────────────── */
-tfoot { display: none; }
-tfoot.visible { display: table-footer-group; }
-tfoot td {
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
-  background: var(--teal-900);
-  color: var(--teal-100);
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  font-size: 13px;
-  border-top: 2px solid var(--teal-700);
-  border-bottom: none;
-}
-tfoot td.total-value { color: #fff; }
-tfoot td.total-label { font-family: var(--font); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; opacity: .7; }
-[data-theme="dark"] tfoot td { background: var(--ink); }
-
-/* ── Header pill buttons ─────────────────────────────────────── */
-.th-btns { float: right; display: inline-flex; gap: 3px; margin-top: 1px; }
-
-.pill-btn {
-  display: inline-flex;
-  align-items: center;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  cursor: pointer;
-  color: var(--muted);
-  padding: 1px 7px;
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition: color 130ms, border-color 130ms, background 130ms;
-}
-.pill-btn:hover { color: var(--teal-900); border-color: var(--teal-700); background: var(--surface); }
-.pill-btn.active-filter { color: var(--ink); background: var(--amber); border-color: var(--amber); }
-.pill-btn.active-total  { color: #fff; background: var(--teal-700); border-color: var(--teal-700); }
-
-/* ── Filter Popup ───────────────────────────────────────────── */
-#filter-pop {
-  position: fixed;
-  background: var(--surface);
-  border: 1px solid var(--teal-700);
-  padding: 12px;
-  border-radius: var(--r-card);
-  display: none;
-  z-index: 300;
-  box-shadow: 0 4px 16px rgba(1,45,44,.18);
-  width: 224px;
-}
-#filter-pop input[type="text"] { margin-bottom: 8px; }
-.f-list { max-height: 160px; overflow-y: auto; margin: 8px 0 10px; border: 1px solid var(--border); border-radius: 6px; }
-.f-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; font-size: 13px; font-family: var(--font); cursor: pointer; color: var(--text); }
-.f-item:hover { background: var(--bg); }
-.f-item input[type="checkbox"] {
-  appearance: none; -webkit-appearance: none;
-  width: 15px; height: 15px; flex-shrink: 0;
-  border: 1.5px solid var(--border); border-radius: 3px;
-  background: var(--surface); cursor: pointer; position: relative;
-  transition: background 130ms, border-color 130ms;
-}
-.f-item input[type="checkbox"]:hover { border-color: var(--teal-700); }
-.f-item input[type="checkbox"]:checked { background: var(--teal-700); border-color: var(--teal-700); }
-.f-item input[type="checkbox"]:indeterminate { background: var(--teal-100); border-color: var(--teal-700); }
-.f-item input[type="checkbox"]:checked::after {
-  content: ''; position: absolute; left: 3px; top: 0px;
-  width: 5px; height: 9px; border: 2px solid #fff;
-  border-top: none; border-left: none; transform: rotate(45deg);
-}
-#filter-pop > .f-item { border-bottom: 1px solid var(--border); font-weight: 600; font-size: 12px; color: var(--muted); }
+/* Settings popup — wider to fit column names */
+#settings-pop { width:200px; }
+#settings-pop .f-list { margin:0; }
 </style>
 </head>
 <body>
@@ -297,11 +159,13 @@ tfoot td.total-label { font-family: var(--font); font-size: 11px; letter-spacing
       <span id="drop-filename"></span>
     </div>
     <span id="info"></span>
+    <button class="btn btn-out" id="col-settings-btn" onclick="openSettings(event)" style="display:none">Columns</button>
   </div>
 
   <div class="grid-box" id="box" onscroll="render()">
     <div class="empty-state" id="empty">Load an Excel file to get started</div>
     <table id="tbl" style="display:none">
+      <colgroup id="colgroup"></colgroup>
       <thead id="head"></thead>
       <tbody id="body"></tbody>
       <tfoot id="foot"><tr id="foot-row"></tr></tfoot>
@@ -309,8 +173,9 @@ tfoot td.total-label { font-family: var(--font); font-size: 11px; letter-spacing
   </div>
 </div>
 
-<div id="filter-pop">
-  <input type="text" id="f-srch" placeholder="Search…" oninput="filterItems(this.value)">
+<!-- Filter popup -->
+<div id="filter-pop" class="popup">
+  <input type="text" id="f-srch" placeholder="Search…" oninput="filterItems(this.value)" style="margin-bottom:8px">
   <label class="f-item">
     <input type="checkbox" id="f-all" checked onchange="toggleAll(this.checked)">
     Select all
@@ -319,11 +184,29 @@ tfoot td.total-label { font-family: var(--font); font-size: 11px; letter-spacing
   <button class="btn" onclick="applyFilter()">Apply</button>
 </div>
 
-<script>
-let data = [], filtered = [], headers = [], activeF = {}, totalsSet = new Set(), curCol = null;
-const RH = 41;
+<!-- Column settings popup -->
+<div id="settings-pop" class="popup">
+  <div class="popup-header">Columns</div>
+  <div class="f-list" id="settings-list"></div>
+</div>
 
-/* ── Theme ─────────────────────────────────────────────────── */
+<script>
+/* ── State ──────────────────────────────────────────────────── */
+let data = [], filtered = [], headers = [];
+let colOrder  = [];          // display order: array of original indices
+let hiddenCols = new Set();  // original indices that are hidden
+let colWidths  = [];         // px width per original index
+let activeF    = {};         // original index (num) → Set of string values
+let totalsSet  = new Set();  // original indices with totals enabled
+let curCol     = null;
+let wasDragged = false;
+let dragSrcPos = null;
+const RH = 41;
+const DEFAULT_W = 200;
+
+const visibleCols = () => colOrder.filter(i => !hiddenCols.has(i));
+
+/* ── Theme ──────────────────────────────────────────────────── */
 function toggleTheme() {
   const html = document.documentElement;
   const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -331,7 +214,7 @@ function toggleTheme() {
   document.getElementById('theme-btn').textContent = next === 'dark' ? 'Dark' : 'Light';
 }
 
-/* ── Drag & drop ────────────────────────────────────────────── */
+/* ── File drop zone ─────────────────────────────────────────── */
 const dropZone = document.getElementById('drop-zone');
 ['dragenter','dragover'].forEach(ev =>
   dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add('drag-over'); })
@@ -340,76 +223,84 @@ const dropZone = document.getElementById('drop-zone');
   dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.remove('drag-over'); })
 );
 dropZone.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) readFile(f); });
-
-/* ── File load ──────────────────────────────────────────────── */
 function loadFile(input) { readFile(input.files[0]); }
 
 function readFile(file) {
   const reader = new FileReader();
   reader.onload = e => {
-    /* readAsArrayBuffer — modern replacement for deprecated readAsBinaryString */
-    const wb  = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
-    const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
-    headers  = raw[0] || [];
-    data     = raw.slice(1);
-    filtered = [...data];
-    activeF  = {};
+    const wb  = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
+    const raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header:1 });
+    headers    = raw[0] || [];
+    data       = raw.slice(1);
+    filtered   = [...data];
+    colOrder   = headers.map((_, i) => i);
+    colWidths  = headers.map(() => DEFAULT_W);
+    hiddenCols.clear();
+    activeF    = {};
     totalsSet.clear();
     document.getElementById('drop-filename').textContent = file.name;
     document.getElementById('empty').style.display = 'none';
     document.getElementById('tbl').style.display = '';
+    document.getElementById('col-settings-btn').style.display = '';
     renderHeaders();
     render();
   };
   reader.readAsArrayBuffer(file);
 }
 
-/* ── Escape closes popup ────────────────────────────────────── */
+/* ── Close popups on outside click / Escape ─────────────────── */
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.getElementById('filter-pop').style.display = 'none';
+  if (e.key === 'Escape') { closePopup('filter-pop'); closePopup('settings-pop'); }
 });
-
-/* ── Outside click closes popup ─────────────────────────────── */
 document.addEventListener('click', e => {
-  const pop = document.getElementById('filter-pop');
-  if (pop.style.display === 'block' && !pop.contains(e.target) && !e.target.closest('.pill-btn'))
-    pop.style.display = 'none';
+  if (!e.target.closest('#filter-pop')   && !e.target.closest('.pill-btn'))   closePopup('filter-pop');
+  if (!e.target.closest('#settings-pop') && !e.target.closest('#col-settings-btn')) closePopup('settings-pop');
 });
+function closePopup(id) { document.getElementById(id).style.display = 'none'; }
 
-/* ── Headers ────────────────────────────────────────────────── */
+/* ── Render headers ─────────────────────────────────────────── */
 function renderHeaders() {
-  document.getElementById('head').innerHTML =
-    `<tr>${headers.map((h, i) => {
-      const isFiltered = !!activeF[i];
-      const isTotal    = totalsSet.has(i);
-      const sortCls    = sortState.col === i ? (sortState.dir ? 'sort-asc' : 'sort-desc') : '';
-      return `<th class="${isFiltered ? 'filtered ' : ''}${sortCls}" onclick="sortCol(${i})">
-        ${h || ''}
-        <span class="th-btns">
-          <button class="pill-btn${isTotal ? ' active-total' : ''}" onclick="toggleTotal(event,${i})">∑</button>
-          <button class="pill-btn${isFiltered ? ' active-filter' : ''}" onclick="openF(event,${i})">filter</button>
-        </span>
-      </th>`;
-    }).join('')}</tr>`;
+  const vis = visibleCols();
+
+  // colgroup — drives all column widths without re-rendering rows
+  document.getElementById('colgroup').innerHTML =
+    vis.map(i => `<col style="width:${colWidths[i]}px">`).join('');
+
+  document.getElementById('head').innerHTML = `<tr>${vis.map((origIdx, pos) => {
+    const isF = !!activeF[origIdx];
+    const isT = totalsSet.has(origIdx);
+    const sc  = sortState.col === origIdx ? (sortState.dir ? 'sort-asc' : 'sort-desc') : '';
+    return `<th class="${isF ? 'filtered ' : ''}${sc}"
+      draggable="true"
+      onclick="sortCol(${origIdx})"
+      ondragstart="colDragStart(event,${pos})"
+      ondragover="colDragOver(event,${pos})"
+      ondrop="colDrop(event,${pos})"
+      ondragend="colDragEnd()">
+      <span class="th-label">${headers[origIdx] || ''}</span>
+      <span class="th-btns">
+        <button class="pill-btn${isT ? ' active-total' : ''}"   onclick="toggleTotal(event,${origIdx})">∑</button>
+        <button class="pill-btn${isF ? ' active-filter' : ''}" onclick="openF(event,${origIdx})">filter</button>
+      </span>
+      <div class="resize-handle" onmousedown="startResize(event,${origIdx})"></div>
+    </th>`;
+  }).join('')}</tr>`;
 }
 
 /* ── Render rows (virtual scroll) ───────────────────────────── */
 function render() {
+  const vis   = visibleCols();
   const box   = document.getElementById('box');
   const start = Math.floor(box.scrollTop / RH);
   const end   = start + 30;
-
-  document.getElementById('info').textContent = `${filtered.length.toLocaleString()} rows`;
-
   const topPad = start * RH;
   const botPad = Math.max(0, (filtered.length - end) * RH);
 
+  document.getElementById('info').textContent = `${filtered.length.toLocaleString()} rows`;
   document.getElementById('body').innerHTML =
     `<tr style="height:${topPad}px"></tr>` +
     filtered.slice(start, end).map(r =>
-      `<tr>${headers.map((_, i) =>
-        `<td class="${totalsSet.has(i) ? 'has-total' : ''}">${r[i] ?? ''}</td>`
-      ).join('')}</tr>`
+      `<tr>${vis.map(i => `<td class="${totalsSet.has(i) ? 'has-total' : ''}">${r[i] ?? ''}</td>`).join('')}</tr>`
     ).join('') +
     `<tr style="height:${botPad}px"></tr>`;
 
@@ -417,52 +308,142 @@ function render() {
 }
 
 /* ── Totals ─────────────────────────────────────────────────── */
-function toggleTotal(e, i) {
+function toggleTotal(e, origIdx) {
   e.stopPropagation();
-  if (totalsSet.has(i)) totalsSet.delete(i);
-  else totalsSet.add(i);
+  totalsSet.has(origIdx) ? totalsSet.delete(origIdx) : totalsSet.add(origIdx);
   renderHeaders();
   render();
 }
 
 function renderTotals() {
+  const vis  = visibleCols();
   const foot = document.getElementById('foot');
-  const row  = document.getElementById('foot-row');
-
-  if (totalsSet.size === 0) { foot.classList.remove('visible'); return; }
+  const anyVisible = vis.some(i => totalsSet.has(i));
+  if (!anyVisible) { foot.classList.remove('visible'); return; }
   foot.classList.add('visible');
-
-  row.innerHTML = headers.map((h, i) => {
+  document.getElementById('foot-row').innerHTML = vis.map(i => {
     if (!totalsSet.has(i)) return `<td></td>`;
     const sum = filtered.reduce((acc, r) => {
       const v = parseFloat(String(r[i] ?? '').replace(/[, ]/g, ''));
       return acc + (isNaN(v) ? 0 : v);
     }, 0);
-    const fmt = Number.isInteger(sum) ? sum.toLocaleString() : sum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return `<td class="total-value" title="Sum of ${filtered.length.toLocaleString()} rows">${fmt}</td>`;
+    const fmt = Number.isInteger(sum)
+      ? sum.toLocaleString()
+      : sum.toLocaleString(undefined, { minimumFractionDigits:2, maximumFractionDigits:2 });
+    return `<td class="total-value" title="Sum of ${filtered.length.toLocaleString()} visible rows">${fmt}</td>`;
   }).join('');
 }
 
 /* ── Sort ───────────────────────────────────────────────────── */
-const sortState = { col: null, dir: true };
-function sortCol(i) {
-  if (sortState.col === i) sortState.dir = !sortState.dir;
-  else { sortState.col = i; sortState.dir = true; }
-  filtered.sort((a, b) => (a[i] > b[i] ? 1 : a[i] < b[i] ? -1 : 0) * (sortState.dir ? 1 : -1));
+const sortState = { col:null, dir:true };
+function sortCol(origIdx) {
+  if (wasDragged) { wasDragged = false; return; }
+  if (sortState.col === origIdx) sortState.dir = !sortState.dir;
+  else { sortState.col = origIdx; sortState.dir = true; }
+  filtered.sort((a, b) => (a[origIdx] > b[origIdx] ? 1 : a[origIdx] < b[origIdx] ? -1 : 0) * (sortState.dir ? 1 : -1));
+  renderHeaders();
+  render();
+}
+
+/* ── Column resize ──────────────────────────────────────────── */
+function startResize(e, origIdx) {
+  e.stopPropagation();
+  e.preventDefault();
+  const startX = e.clientX;
+  const startW = colWidths[origIdx];
+  document.body.classList.add('resizing');
+
+  const onMove = ev => {
+    colWidths[origIdx] = Math.max(60, startW + ev.clientX - startX);
+    // Update only the <col> element — no re-render needed
+    const pos = visibleCols().indexOf(origIdx);
+    const col = document.querySelectorAll('#colgroup col')[pos];
+    if (col) col.style.width = colWidths[origIdx] + 'px';
+  };
+  const onUp = () => {
+    document.body.classList.remove('resizing');
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  };
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+/* ── Column reorder (drag) ──────────────────────────────────── */
+function colDragStart(e, pos) {
+  dragSrcPos = pos;
+  wasDragged = true;
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.classList.add('dragging');
+}
+
+function colDragOver(e, pos) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('th').forEach(th => th.classList.remove('drag-over'));
+  if (pos !== dragSrcPos) e.currentTarget.classList.add('drag-over');
+}
+
+function colDrop(e, pos) {
+  e.preventDefault();
+  document.querySelectorAll('th').forEach(th => th.classList.remove('drag-over', 'dragging'));
+  if (dragSrcPos === null || dragSrcPos === pos) return;
+  const vis      = visibleCols();
+  const srcOrig  = vis[dragSrcPos];
+  const tgtOrig  = vis[pos];
+  const srcInOrder = colOrder.indexOf(srcOrig);
+  const tgtInOrder = colOrder.indexOf(tgtOrig);
+  colOrder.splice(srcInOrder, 1);
+  colOrder.splice(tgtInOrder, 0, srcOrig);
+  dragSrcPos = null;
+  renderHeaders();
+  render();
+}
+
+function colDragEnd() {
+  document.querySelectorAll('th').forEach(th => th.classList.remove('drag-over', 'dragging'));
+  dragSrcPos = null;
+  // Reset flag after click event has had chance to fire
+  setTimeout(() => { wasDragged = false; }, 0);
+}
+
+/* ── Column visibility settings ─────────────────────────────── */
+function openSettings(e) {
+  e.stopPropagation();
+  const pop = document.getElementById('settings-pop');
+  if (pop.style.display === 'block') { pop.style.display = 'none'; return; }
+
+  // List columns in current display order
+  document.getElementById('settings-list').innerHTML = colOrder.map(origIdx =>
+    `<label class="f-item">
+      <input type="checkbox" ${hiddenCols.has(origIdx) ? '' : 'checked'}
+        onchange="toggleCol(${origIdx}, this.checked)">
+      ${headers[origIdx] || '(empty)'}
+    </label>`
+  ).join('');
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  pop.style.display = 'block';
+  pop.style.top  = (rect.bottom + 6) + 'px';
+  pop.style.left = Math.max(4, rect.right - 200) + 'px';
+}
+
+function toggleCol(origIdx, checked) {
+  checked ? hiddenCols.delete(origIdx) : hiddenCols.add(origIdx);
   renderHeaders();
   render();
 }
 
 /* ── Filter ─────────────────────────────────────────────────── */
-function openF(e, i) {
+function openF(e, origIdx) {
   e.stopPropagation();
-  curCol = i;
+  curCol = origIdx;
   const pop  = document.getElementById('filter-pop');
-  /* Values constrained by all other active filters */
+  // Values limited to rows passing all OTHER active filters
   const base = data.filter(r =>
-    Object.keys(activeF).filter(k => +k !== i).every(k => activeF[k].has(String(r[k] ?? '')))
+    Object.keys(activeF).filter(k => +k !== origIdx).every(k => activeF[k].has(String(r[k] ?? '')))
   );
-  const vals = [...new Set(base.map(r => String(r[i] ?? '')))].sort();
+  const vals = [...new Set(base.map(r => String(r[origIdx] ?? '')))].sort();
   pop.style.display = 'block';
   pop.style.top  = Math.min(e.clientY + 8, window.innerHeight - 300) + 'px';
   pop.style.left = Math.max(4, e.clientX - 224) + 'px';
@@ -470,14 +451,14 @@ function openF(e, i) {
   document.getElementById('f-list').innerHTML = vals.map(v =>
     `<label class="f-item">
        <input type="checkbox" class="f-cb" value="${v}"
-         ${!activeF[i] || activeF[i].has(v) ? 'checked' : ''}>
+         ${!activeF[origIdx] || activeF[origIdx].has(v) ? 'checked' : ''}>
        ${v || '<em style="color:var(--ph)">(Empty)</em>'}
      </label>`
   ).join('');
   syncSelectAll();
 }
 
-function toggleAll(chk)  { document.querySelectorAll('.f-cb').forEach(c => c.checked = chk); }
+function toggleAll(chk) { document.querySelectorAll('.f-cb').forEach(c => c.checked = chk); }
 
 function syncSelectAll() {
   const all = [...document.querySelectorAll('.f-cb')];
@@ -500,7 +481,7 @@ function applyFilter() {
   filtered = data.filter(r =>
     Object.keys(activeF).every(k => activeF[k].has(String(r[k] ?? '')))
   );
-  document.getElementById('filter-pop').style.display = 'none';
+  closePopup('filter-pop');
   renderHeaders();
   render();
 }
