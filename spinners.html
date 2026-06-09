@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .presentation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 800px;
+  }
+
+  .spinner-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  .spinner-card:hover {
+    border-color: #50C1C1;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+  }
+
+  .spinner-card span {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* --- GLOBAL ANIMATION CONTROL --- */
+  rect {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation-play-state: paused !important; 
+  }
+
+  .spinner-card:hover rect {
+    animation-play-state: running !important;
+  }
+
+  /* --- KEYFRAMES --- */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+  }
+
+  /* Circle trail logic */
+  @keyframes circle-trail {
+    0% { opacity: 1; transform: scale(1.1); } 
+    30% { opacity: 0.6; transform: scale(1.05); } 
+    60%, 100% { opacity: 0.2; transform: scale(1); } 
+  }
+
+  @keyframes wave-logic {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.2; transform: scale(0.5); }
+  }
+
+  /* --- OPTION 1: PULSE GRID --- */
+  .spinner-grid rect { animation: pulse 1.5s infinite ease-in-out; }
+  .spinner-grid rect:nth-child(1) { animation-delay: 0s; }
+  .spinner-grid rect:nth-child(2), .spinner-grid rect:nth-child(4) { animation-delay: 0.2s; }
+  .spinner-grid rect:nth-child(3), .spinner-grid rect:nth-child(5), .spinner-grid rect:nth-child(7) { animation-delay: 0.4s; }
+  .spinner-grid rect:nth-child(6), .spinner-grid rect:nth-child(8) { animation-delay: 0.6s; }
+  .spinner-grid rect:nth-child(9) { animation-delay: 0.8s; }
+
+  /* --- OPTION 2: CIRCLE (Twice as fast: 1.2s duration) --- */
+  .spinner-circle rect { opacity: 0.2; }
+  .spinner-circle rect.perimeter { animation: circle-trail 1.2s infinite linear; }
+  
+  /* Sequential delays halved to match 1.2s total duration */
+  .spinner-circle rect:nth-child(1) { animation-delay: 0.0s; }
+  .spinner-circle rect:nth-child(2) { animation-delay: 0.15s; }
+  .spinner-circle rect:nth-child(3) { animation-delay: 0.3s; }
+  .spinner-circle rect:nth-child(6) { animation-delay: 0.45s; }
+  .spinner-circle rect:nth-child(9) { animation-delay: 0.6s; }
+  .spinner-circle rect:nth-child(8) { animation-delay: 0.75s; }
+  .spinner-circle rect:nth-child(7) { animation-delay: 0.9s; }
+  .spinner-circle rect:nth-child(4) { animation-delay: 1.05s; }
+
+  /* --- OPTION 3: SEQUENTIAL WAVE --- */
+  .spinner-seq rect { animation: wave-logic 1.1s infinite ease-in-out; }
+  .spinner-seq .sq-1 { animation-delay: 0.0s; }
+  .spinner-seq .sq-2 { animation-delay: 0.1s; }
+  .spinner-seq .sq-3 { animation-delay: 0.2s; }
+  .spinner-seq .sq-4 { animation-delay: 0.3s; }
+  .spinner-seq .sq-5 { animation-delay: 0.4s; }
+  .spinner-seq .sq-6 { animation-delay: 0.5s; }
+  .spinner-seq .sq-7 { animation-delay: 0.6s; }
+  .spinner-seq .sq-8 { animation-delay: 0.7s; }
+  .spinner-seq .sq-9 { animation-delay: 0.8s; }
+
+  /* --- OPTION 4: THREE SQUARE WAVE --- */
+  .spinner-progress rect { animation: wave-logic 1.6s infinite ease-in-out; }
+  .spinner-progress .dot-1 { animation-delay: 0.0s; }
+  .spinner-progress .dot-2 { animation-delay: 0.3s; }
+  .spinner-progress .dot-3 { animation-delay: 0.6s; }
+
+</style>
+</head>
+<body>
+
+<div class="presentation-grid">
+  
+  <div class="spinner-card">
+    <svg class="spinner-grid" width="60" height="42" viewBox="0 0 31 22">
+      <rect x="0" y="0" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect x="11" y="0" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect x="22" y="0" width="9" height="6" rx="1.5" fill="#008282"></rect>
+      <rect x="0" y="8" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect x="11" y="8" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect x="22" y="8" width="9" height="6" rx="1.5" fill="#008282"></rect>
+      <rect x="0" y="16" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect x="11" y="16" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect x="22" y="16" width="9" height="6" rx="1.5" fill="#E1A01E"></rect>
+    </svg>
+    <span>Pulse Grid</span>
+  </div>
+
+  <div class="spinner-card">
+    <svg class="spinner-circle" width="60" height="42" viewBox="0 0 31 22">
+      <rect class="perimeter" x="0" y="0" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect class="perimeter" x="11" y="0" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect class="perimeter" x="22" y="0" width="9" height="6" rx="1.5" fill="#008282"></rect>
+      <rect class="perimeter" x="0" y="8" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect x="11" y="8" width="9" height="6" rx="1.5" fill="#50C1C1"></rect> <!-- Center stays dim -->
+      <rect class="perimeter" x="22" y="8" width="9" height="6" rx="1.5" fill="#008282"></rect>
+      <rect class="perimeter" x="0" y="16" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect class="perimeter" x="11" y="16" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect class="perimeter" x="22" y="16" width="9" height="6" rx="1.5" fill="#E1A01E"></rect>
+    </svg>
+    <span>Circle</span>
+  </div>
+
+  <div class="spinner-card">
+    <svg class="spinner-seq" width="60" height="42" viewBox="0 0 31 22">
+      <rect class="sq-1" x="0" y="0" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect class="sq-2" x="11" y="0" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect class="sq-3" x="22" y="0" width="9" height="6" rx="1.5" fill="#008282"></rect>
+      <rect class="sq-4" x="0" y="8" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect class="sq-5" x="11" y="8" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect class="sq-6" x="22" y="8" width="9" height="6" rx="1.5" fill="#008282"></rect>
+      <rect class="sq-7" x="0" y="16" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect class="sq-8" x="11" y="16" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect class="sq-9" x="22" y="16" width="9" height="6" rx="1.5" fill="#E1A01E"></rect>
+    </svg>
+    <span>Sequential Wave</span>
+  </div>
+
+  <div class="spinner-card">
+    <svg class="spinner-progress" width="80" height="15" viewBox="0 0 31 6">
+      <rect class="dot-1" x="0" y="0" width="9" height="6" rx="1.5" fill="#95DFDB"></rect>
+      <rect class="dot-2" x="11" y="0" width="9" height="6" rx="1.5" fill="#50C1C1"></rect>
+      <rect class="dot-3" x="22" y="0" width="9" height="6" rx="1.5" fill="#008282"></rect>
+    </svg>
+    <span>Three-Square Wave</span>
+  </div>
+
+</div>
+
+</body>
+</html>
